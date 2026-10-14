@@ -1,0 +1,164 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  :root { --ink: #1f2328; --muted: #656d76; --line: #d8dee4; --soft: #f6f8fa; --red: #b42318; --green: #1a7f37; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 40px; background: transparent; font-family: "Segoe UI", system-ui, sans-serif; color: var(--ink); }
+  .shot { background: #fff; border: 1px solid var(--line); border-radius: 6px; margin-bottom: 40px; }
+  .face { border-radius: 50%; flex: none; background: #fff no-repeat center / cover; border: 2px solid var(--ink); }
+  h2 { margin: 0 0 6px; font-size: 30px; font-weight: 600; }
+  .sub { color: var(--muted); font-size: 19px; margin: 0; }
+  code, .mono { font-family: Consolas, monospace; }
+  .label { font-size: 14px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+  .ask { color: var(--red); }
+  .ok { color: var(--green); }
+
+  /* avatar */
+  #avatar { width: 512px; height: 512px; border: 0; background: transparent; display: grid; place-items: center; }
+  #avatar .face { width: 500px; height: 500px; border-width: 6px; }
+
+  /* banner */
+  #banner { width: 1280px; height: 400px; display: flex; align-items: center; gap: 56px; padding: 0 80px; }
+  #banner .face { width: 260px; height: 260px; }
+  #banner h1 { font-size: 60px; line-height: 1.08; margin: 0 0 16px; font-weight: 700; letter-spacing: -1px; }
+  #banner p { font-size: 24px; color: var(--muted); margin: 0; line-height: 1.4; }
+
+  /* comparisons */
+  .cmp { width: 1280px; padding: 40px 48px 44px; }
+  .cmp .prompt { font-family: Consolas, monospace; font-size: 22px; margin: 0 0 26px; }
+  .cmp .prompt span { color: var(--muted); font-family: "Segoe UI", sans-serif; font-size: 16px; letter-spacing: .08em; text-transform: uppercase; display: block; margin-bottom: 6px; }
+  .cmp .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+  .cmp .head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+  .cmp .head .label { font-size: 16px; }
+  .cmp .head .stat { font-size: 16px; color: var(--muted); }
+  .frame { border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+  .frame .bar { height: 22px; background: var(--soft); border-bottom: 1px solid var(--line); }
+  .frame img { display: block; width: 100%; }
+  .crop { overflow: hidden; }
+  .crop img { display: block; width: 100%; }
+  .reply { margin-top: 18px; border: 1px solid var(--line); border-radius: 4px; padding: 18px 22px; font-size: 16.5px; line-height: 1.5; }
+  .reply .who { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .reply ol { margin: 8px 0 0; padding-left: 22px; }
+  .reply li { margin-bottom: 4px; }
+  .note { margin-top: 14px; font-size: 16px; color: var(--muted); line-height: 1.45; }
+
+  .marked { position: relative; }
+  .marked img { display: block; width: 100%; }
+  .mark { position: absolute; border: 2px solid var(--red); border-radius: 3px; }
+  .mark b { position: absolute; top: 50%; left: -27px; transform: translateY(-50%); width: 20px; height: 20px; border-radius: 50%; background: var(--red); color: #fff; font-size: 12px; display: grid; place-items: center; }
+  .mark.design { border: 3px dashed #8c959f; }
+  .mark.design b { background: #57606a; box-shadow: 0 0 0 2px #fff; }
+  .mark.in b { left: 8px; top: 8px; transform: none; }
+  .legend b.d { background: #57606a; }
+  .legend { margin-top: 28px; border-top: 1px solid var(--line); padding-top: 18px; font-size: 16.5px; line-height: 1.5; }
+  .legend .lh { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .legend b { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--red); color: #fff; font-size: 12px; margin-right: 8px; }
+  .legend > div { margin-bottom: 8px; }
+  .legend .lf { margin-top: 14px; color: var(--muted); }
+
+  /* results */
+  #results { width: 760px; padding: 40px 48px; }
+  #results h2 { font-size: 26px; }
+  #results .bars { display: flex; align-items: flex-end; gap: 48px; height: 260px; border-bottom: 1px solid var(--ink); margin-top: 30px; padding: 0 40px; }
+  #results .bar { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; }
+  #results .bar .v { font-size: 26px; font-weight: 600; margin-bottom: 8px; }
+  #results .bar .b { width: 100%; background: var(--ink); }
+  #results .labels { display: flex; gap: 48px; padding: 12px 40px 0; }
+  #results .labels div { flex: 1; text-align: center; font-size: 18px; }
+  #results .foot { margin-top: 24px; font-size: 16px; color: var(--muted); line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<!-- 2. banner -->
+<div class="shot" id="banner">
+  <div class="face"></div>
+  <div>
+    <h1>Never letting your<br>agent assooom</h1>
+    <p>A skill for coding agents that refuses vague<br>requests instead of guessing what you meant.</p>
+  </div>
+</div>
+
+<!-- 3. comparison: more detailed -->
+<div class="shot cmp" id="compare-detailed">
+  <p class="prompt"><span>Prompt</span>"Fix this landing page to make it more detailed."</p>
+  <div class="cols">
+    <div>
+      <div class="head"><span class="label ask">Without Assoomer</span><span class="stat">218 lines changed</span></div>
+      <div class="frame"><div class="bar"></div><div class="marked"><img src="shots/v1.png"><div class="mark" style="left:27.34%;top:7.30%;width:45.47%;height:2.61%"><b>1</b></div><div class="mark" style="left:36.56%;top:12.82%;width:26.88%;height:0.97%"><b>2</b></div><div class="mark" style="left:30.00%;top:24.52%;width:18.59%;height:4.17%"><b>3</b></div><div class="mark" style="left:26.25%;top:61.85%;width:15.62%;height:4.17%"><b>4</b></div><div class="mark" style="left:51.88%;top:61.85%;width:17.34%;height:4.17%"><b>4</b></div><div class="mark" style="left:23.44%;top:80.33%;width:19.14%;height:1.42%"><b>5</b></div><div class="mark design" style="left:37.34%;top:10.51%;width:25.16%;height:1.94%"><b>A</b></div><div class="mark design in" style="left:7.50%;top:39.57%;width:84.69%;height:7.08%"><b>B</b></div><div class="mark design in" style="left:1.09%;top:87.11%;width:97.81%;height:9.02%"><b>C</b></div></div></div>
+    </div>
+    <div>
+      <div class="head"><span class="label ok">With Assoomer</span><span class="stat">0 files changed</span></div>
+      <div class="reply" style="margin-top:0">
+        <div class="who">Agent</div>
+        "More detailed" could go a lot of ways, and most of them mean writing product claims only you can decide.
+        <ol>
+          <li>Which sections should change: Hero, Features, Pricing, or new ones?</li>
+          <li>What should the new text say? I won't make up product claims or testimonials.</li>
+          <li>Can the layout change, or only the content?</li>
+        </ol>
+      </div>
+      <div class="note">Once you answer, it builds the page with your content, not its guesses.</div>
+      <div class="legend">
+        <div class="lh">Things the agent made up without Assoomer</div>
+        <div><b>1</b> What the product does: "plan projects, share files"</div>
+        <div><b>2</b> A pricing promise: "free forever, no credit card required"</div>
+        <div><b>3</b> A security claim: "encrypted in transit and at rest"</div>
+        <div><b>4</b> Plan limits and features for Free and Pro</div>
+        <div><b>5</b> FAQ questions, like "How is my data protected?"</div>
+        <div class="lh" style="margin-top:22px">Design it assumed: the usual AI landing-page template</div>
+        <div><b class="d">A</b> Centered hero with two buttons</div>
+        <div><b class="d">B</b> "How it works" in 3 numbered steps</div>
+        <div><b class="d">C</b> Dark "Ready to bring your team together?" banner at the bottom</div>
+        <div class="lf">It looks polished, but none of it was decided by you. Because the agent guessed, it went with the most generic version.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. comparison: testimonials -->
+<div class="shot cmp" id="compare-testimonials">
+  <p class="prompt"><span>Prompt</span>"Add a modern testimonials section with engaging copy. Use realistic content."</p>
+  <div class="cols">
+    <div>
+      <div class="head"><span class="label ask">Without Assoomer</span><span class="stat">96 lines changed</span></div>
+      <div class="frame"><div class="bar"></div><div class="crop" style="height:340px"><img src="shots/v3.png" style="margin-top:-232px"></div></div>
+      <div class="note">Three customers who don't exist, at companies that don't exist, praising features nobody confirmed, including a SOC 2 report.</div>
+    </div>
+    <div>
+      <div class="head"><span class="label ok">With Assoomer</span><span class="stat">0 files changed</span></div>
+      <div class="reply" style="margin-top:0">
+        <div class="who">Agent</div>
+        "Realistic content" means writing quotes, names and companies that would be published as statements from customers. I can't make those up.
+        <ol>
+          <li>Can you paste 3 real testimonials? If not, should I use clearly marked placeholders?</li>
+          <li>Avatars: your images, initials, or a placeholder service?</li>
+          <li>Match the current plain style, or a new one?</li>
+          <li>Hover effect: lift, blue border, or both?</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. results -->
+<div class="shot" id="results">
+  <h2>Vague prompts where the agent edited files anyway</h2>
+  <p class="sub">Claude Code, 4 vague prompts × 3 runs each, fresh project copy per run.</p>
+  <div class="bars">
+    <div class="bar"><div class="v">12 / 12</div><div class="b" style="height:100%"></div></div>
+    <div class="bar"><div class="v">0 / 12</div><div class="b" style="height:0"></div></div>
+  </div>
+  <div class="labels"><div class="ask label">Without Assoomer</div><div class="ok label">With Assoomer</div></div>
+  <div class="foot">Clear prompts (rename, recolor, change a heading) still went through in 12 of 12 runs with Assoomer.</div>
+</div>
+
+<script>
+// avatar.png is the finished, cleaned-up crop; reuse it for the banner.
+document.querySelectorAll('.face').forEach(f => f.style.backgroundImage = 'url(../avatar.png)');
+window.ready = Promise.resolve();
+</script>
+</body>
+</html>
