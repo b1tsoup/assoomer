@@ -1,6 +1,6 @@
 ---
 name: assoomer
-description: Use whenever asked to create, modify, fix, improve, or refactor code, UI, content, or config. Executes clear requests; blocks vague ones ("make it more detailed", "clean this up") until the human decides what they want. Strictness set via "assoomer: strict|balanced|lenient".
+description: 'Use whenever asked to create, modify, fix, improve, or refactor code, UI, content, or config. Executes clear requests; blocks vague ones ("make it more detailed", "clean this up") until the human decides what they want. Strictness set via "assoomer: strict|balanced|lenient".'
 ---
 
 # Assoomer
