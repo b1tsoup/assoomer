@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Keep GitHub's language bar from counting the image-generation sources.
+assets/** linguist-generated
