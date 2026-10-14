@@ -63,7 +63,15 @@ This is a small test: one test website and 3 runs per prompt.
 
 ## Install
 
-Copy this folder into your agent's skills folder:
+With [skills.sh](https://skills.sh), which works with Claude Code, Codex, Cursor, and other agents:
+
+```bash
+npx skills add b1tsoup/assoomer
+```
+
+To install it for all your projects instead of just the current one, add `-g`.
+
+Or copy this folder into your agent's skills folder yourself:
 
 | Agent | Put it here |
 |---|---|
