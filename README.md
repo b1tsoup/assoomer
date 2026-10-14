@@ -55,6 +55,12 @@ Or set it for a single message:
 assoomer: strict. Make the button bigger.
 ```
 
+To skip it entirely for one request:
+
+```
+assoomer: off. Make the landing page more detailed.
+```
+
 ## Does it work?
 
 ![Test results](assets/results.png)

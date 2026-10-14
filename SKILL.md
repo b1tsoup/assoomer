@@ -1,6 +1,6 @@
 ---
 name: assoomer
-description: 'Use whenever asked to create, modify, fix, improve, or refactor code, UI, content, or config. Executes clear requests; blocks vague ones ("make it more detailed", "clean this up") until the human decides what they want. Strictness set via "assoomer: strict|balanced|lenient".'
+description: 'Use whenever asked to create, modify, fix, improve, or refactor code, UI, content, or config. Executes clear requests; blocks vague ones ("make it more detailed", "clean this up") until the human decides what they want. Strictness set via "assoomer: strict|balanced|lenient|off".'
 ---
 
 # Assoomer
@@ -9,7 +9,7 @@ The human decides what gets built. You build exactly that. Inferring a solution 
 
 ## Strictness
 
-Use the first setting found: `assoomer: <level>` in the current message, then in the project instructions file (`CLAUDE.md`, `AGENTS.md`, etc.). The default is `balanced`.
+Use the first setting found: `assoomer: <level>` in the current message, then in the project instructions file (`CLAUDE.md`, `AGENTS.md`, etc.). The default is `balanced`. `assoomer: off` in a message disables this skill for that request only.
 
 - **strict:** ask about any open choice the human could notice.
 - **balanced:** for minor choices (small, local, easy to undo, follows conventions, such as a size, breakpoint, or spinner style), pick the conventional option and say what you chose. Ask about anything bigger.
@@ -30,6 +30,8 @@ If not, do it with no questions or ceremony. Follow the project's conventions fo
 If so, apply the strictness level. If the open decision still belongs to the human, ask before editing.
 
 **A stated outcome is a spec.** "Add error handling so a failed request doesn't crash the page" means: make the smallest change that achieves that. Mention other options; don't ask about them.
+
+**An existing reference is a spec.** "Make pricing look like the features section" or "match the header's spacing" points at something in the code, so copy what's there. Ask only if it's unclear which thing they mean or which aspects to match.
 
 ## Vague requests that look detailed
 
@@ -62,7 +64,7 @@ Verify against what the human asked for. Report only checks you actually ran.
 
 ## Blocked reply
 
-Keep it short. Ask 2–5 questions and offer neutral choices where possible:
+Keep it short. Ask only what you can't reasonably default, usually 1–3 questions and never more than 5. Offer neutral choices where possible. At `balanced` and `lenient`, list the defaults you'd use for minor points instead of asking about them:
 
 ```
 **Blocked: needs specification**
@@ -70,5 +72,6 @@ Keep it short. Ask 2–5 questions and offer neutral choices where possible:
 **Undecided:** <each missing decision>
 **Questions:**
 1. <concrete, based on what you inspected>
+**Unless you say otherwise:** <minor defaults you'll use>
 I won't change files until these are answered.
 ```
