@@ -9,7 +9,7 @@ The human decides what gets built. You build exactly that. Inferring a solution 
 
 ## Strictness
 
-Use the first setting found: `assoomer: <level>` in the current message, then in the project instructions file (`CLAUDE.md`, `AGENTS.md`, etc.). The default is `balanced`. `assoomer: off` in a message disables this skill for that request only.
+Use the first setting found: `assoomer: <level>` in the current message, then in the project instructions file (`CLAUDE.md`, `AGENTS.md`, etc.). The default is `strict`. `assoomer: off` in a message disables this skill for that request only.
 
 - **strict:** ask about any open choice the human could notice.
 - **balanced:** for minor choices (small, local, easy to undo, follows conventions, such as a size, breakpoint, or spinner style), pick the conventional option and say what you chose. Ask about anything bigger.
