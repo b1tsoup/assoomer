@@ -41,7 +41,7 @@ With Assoomer, **every decision in the code is one you made or explicitly handed
 
 ## Choose how strict it is
 
-`strict` asks about every detail. `balanced` (the default) makes small choices itself and tells you what it picked. `lenient` makes most "how" choices itself. No level lets it invent content or decide what gets built.
+`strict` (the default) asks about every detail. `balanced` makes small choices itself and tells you what it picked. `lenient` makes most "how" choices itself. No level lets it invent content or decide what gets built.
 
 To change it, add one line to `CLAUDE.md` or `AGENTS.md`:
 
